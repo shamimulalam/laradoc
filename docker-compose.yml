@@ -1,0 +1,28 @@
+version: '3'
+
+networks:
+  laravel:
+
+services:
+  ngnix:
+    image: nginx:stable-alpine
+    container_name: ngnix
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #container_name: php
+    volumes:
+      - ./src:/var/www
+    networks:
+      - laravel
+
